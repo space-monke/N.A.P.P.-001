@@ -40,7 +40,7 @@ void loop() {
       radio.read(&recievedData, sizeof(recievedData));
       recievedData.x = map(recievedData.x, 0, 1024, 0, 180);
       recievedData.y = map(recievedData.y, 0, 1024, 0, 180);
-      recievedData.throttle = map(recievedData.throttle, 0,1024, 0, 180);
+      recievedData.throttle = map(recievedData.throttle, 0,1024, 0, 160);
       
       //Serial.println(recievedData.x);
       //Serial.println(recievedData.y);
