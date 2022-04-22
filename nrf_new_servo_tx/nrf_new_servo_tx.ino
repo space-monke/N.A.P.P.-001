@@ -9,7 +9,7 @@ struct dato
 {
   int x;
   int y;
-  //int throttle;
+  int throttle;
   bool button1;
   //bool button2;
 };
@@ -32,11 +32,14 @@ void loop() {
   bool mybutton = getButtonState(2);
   int analogOne = analogRead(A0);
   int analogTwo = analogRead(A1);
+  int throttle = analogRead(A2);
   radio.stopListening();
   dato2.button1 = mybutton;
   dato2.x = analogOne;
   dato2.y = analogTwo;
+  dato2.throttle = throttle;
   Serial.print(dato2.button1);
+  
   
   radio.write(&dato2, sizeof(dato2));
 }
