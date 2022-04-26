@@ -8,6 +8,7 @@ const byte addresses[][6] = {"00001"};
 
 Servo servo1;
 Servo servo2;
+Servo tailServo;
 Servo mainEngine;
 
 struct dato
@@ -15,13 +16,13 @@ struct dato
   int x;
   int y;
   int throttle;
-  bool button1;
-  //bool button2;
+  bool forceStop;
 };
 
 void setup() {
   servo1.attach(9);
   servo2.attach(6);
+  tailServo.attach(5);
   mainEngine.attach(3);
   Serial.begin(9600);
   radio.begin();
@@ -31,6 +32,7 @@ void setup() {
 
 void loop() {
   delay(5);
+  
   radio.startListening();
   if ( radio.available()) {
     while (radio.available()) {
@@ -38,25 +40,23 @@ void loop() {
       dato recievedData;
       
       radio.read(&recievedData, sizeof(recievedData));
-      recievedData.x = map(recievedData.x, 0, 1024, 0, 180);
-      recievedData.y = map(recievedData.y, 0, 1024, 0, 180);
+      recievedData.x = map(recievedData.x, 0, 1024, 150, 30);
+      int s2 = map(recievedData.y, 0, 1024, 45, 135);
+      int s1 = map(recievedData.y, 0, 1024, 135, 45);
       recievedData.throttle = map(recievedData.throttle, 0,1024, 0, 160);
       
       //Serial.println(recievedData.x);
       //Serial.println(recievedData.y);
       Serial.println(recievedData.throttle);
       
-      if(recievedData.button1)
+      if(recievedData.forceStop)
       {
-        //servo1.write(160);
-      }
-      else
-      {
-        //servo1.write(90);
+        mainEngine.write(0);
       }
       
-      servo1.write(recievedData.x);
-      servo2.write(recievedData.y);
+      servo1.write(s1);
+      servo2.write(s2);
+      tailServo.write(recievedData.x);
       mainEngine.write(recievedData.throttle);
     }
   }
