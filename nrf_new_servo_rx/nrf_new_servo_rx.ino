@@ -45,8 +45,6 @@ void loop() {
       int s1 = map(recievedData.y, 0, 1024, 135, 45);
       recievedData.throttle = map(recievedData.throttle, 0,1024, 0, 160);
       
-      //Serial.println(recievedData.x);
-      //Serial.println(recievedData.y);
       Serial.println(recievedData.throttle);
       
       if(recievedData.forceStop)
